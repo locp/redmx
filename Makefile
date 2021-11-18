@@ -7,7 +7,7 @@ clean:
 
 build:
 	PYTHONPATH=. python3 -m build
-	PYTHONPATH=.:.. make -C docs html
+	make -C docs html
 
 publish:
 	python3 -m twine upload dist/*
