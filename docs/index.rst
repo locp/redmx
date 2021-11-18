@@ -6,6 +6,11 @@
 Welcome to redmx's documentation!
 =================================
 
+redmx
+=====
+.. automodule:: redmx
+   :members:
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
