@@ -79,3 +79,12 @@ def ensure_rate_matches_expected_rate(redmx_fixture, expected_rate):
     """ensure rate matches <expected_rate>."""
     redmx = redmx_fixture['redmx']
     redmx.rate() == expected_rate
+
+
+@then('ensure string representation is valid')
+def ensure_string_representation_is_valid(redmx_fixture):
+    """ensure string representation is valid."""
+    redmx = redmx_fixture['redmx']
+    s = str(redmx)
+    assert s.startswith('rate =')
+    assert s.endswith('per transaction.')
