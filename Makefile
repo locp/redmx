@@ -7,6 +7,7 @@ clean:
 
 build:
 	PYTHONPATH=. python3 -m build
+	gitchangelog > CHANGELOG.md
 	make -C docs html
 
 publish:
