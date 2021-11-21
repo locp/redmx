@@ -33,11 +33,26 @@ class RateErrorDuration:
         self._start_time = datetime.datetime.now().timestamp()
 
     def __str__(self):
-        """Give a usable string representation of the object."""
-        message = f'rate = {self.rate()} tps, '
-        error_percentage = (self.errors() / self.count()) * 100
-        message += f'errors = {self.errors()} in {self.count()} ({round(error_percentage, 4)}%), '
-        message += f'duration = {self.duration()} milliseconds per transaction.'
+        """
+        Give a usable string representation of the object.
+
+        Returns a string similar to this:
+
+        `rate = 1.9904 tps, errors = 0 in 2 (0.0%), duration = 502.4475 milliseconds per transaction.`
+        """
+        count = self.count()
+        rate = self.rate()
+        errors = self.errors()
+        duration = self.duration()
+        message = f'rate = {rate} tps, '
+
+        if errors:
+            error_percentage = (self.errors() / self.count()) * 100
+        else:
+            error_percentage = 0.0
+
+        message += f'errors = {errors} in {count} ({round(error_percentage, 4)}%), '
+        message += f'duration = {duration} milliseconds per transaction.'
         return message
 
     def count(self, count=None):
@@ -65,11 +80,16 @@ class RateErrorDuration:
         Returns
         -------
         float
-            The average time of a transaction in milliseconds.
+            The average time of a transaction in milliseconds.  If there have been no transactions, then return 0.
         """
         seconds = datetime.datetime.now().timestamp() - self._start_time
         milliseconds = seconds * 1000
-        return round(milliseconds / self.count(), 4)
+        count = self.count()
+
+        if count:
+            return round(milliseconds / self.count(), 4)
+        else:
+            return 0.0
 
     def errors(self, errors=None):
         """
@@ -128,7 +148,12 @@ class RateErrorDuration:
         Returns
         -------
         float
-            The number of transactions per second.
+            The number of transactions per second.  If there have been no transactions then this will return 0.
         """
         seconds = datetime.datetime.now().timestamp() - self._start_time
-        return round(self.count() / seconds, 4)
+        count = self.count()
+
+        if count:
+            return round(self.count() / seconds, 4)
+        else:
+            return 0.0

@@ -6,6 +6,9 @@
 Welcome to the redmx documentation!
 ===================================
 
+.. image:: https://badge.fury.io/py/redmx.svg
+    :target: https://badge.fury.io/py/redmx
+
 redmx
 =====
 .. automodule:: redmx

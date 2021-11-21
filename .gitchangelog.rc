@@ -169,12 +169,6 @@ with open(os.path.join('redmx', 'VERSION')) as version_file:
 
 unreleased_version_label = version
 repo_tags = []
-http = urllib3.PoolManager()
-r = http.request('GET', 'https://api.github.com/repos/locp/redmx/tags')
-data = json.loads(r.data)
-
-for tag in data:
-    repo_tags.append(tag['name'])
 
 if 'GITHUB_EVENT_NAME' in os.environ:
     github_event_name = os.environ['GITHUB_EVENT_NAME']
@@ -182,7 +176,15 @@ else:
     github_event_name = None
 
 if github_event_name == 'pull_request':
+    http = urllib3.PoolManager()
+    r = http.request('GET', 'https://api.github.com/repos/locp/redmx/tags')
+    data = json.loads(r.data)
+
+    for tag in data:
+        repo_tags.append(tag['name'])
+
     print(f'Checking if {version} is in {repo_tags}.', file=sys.stderr)
+
     if version in repo_tags:
         logger.error(f'The tag {version} already exists.')
         sys.exit(1)
