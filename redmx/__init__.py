@@ -2,6 +2,21 @@
 Basic Rate Error & Duration (RED) metrics.
 
 Have an object to be able to gather performance metrics.
+
+Examples
+--------
+>>> import time
+>>> from redmx import RateErrorDuration
+>>> metrics = RateErrorDuration()
+>>> time.sleep(1)
+>>> metrics.increment_count(1)
+>>> metrics.increment_count(1)
+>>> metrics.rate()
+>>> print(metrics)
+
+Will produce the following output:
+
+`rate = 1.9904 tps, errors = 0 in 2 (0.0%), duration = 502.4475 milliseconds per transaction.`
 """
 import datetime
 
