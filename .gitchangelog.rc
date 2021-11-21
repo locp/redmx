@@ -171,7 +171,6 @@ with open(os.path.join('redmx', 'VERSION')) as version_file:
 unreleased_version_label = version
 repo = Repo('.')
 repo_tags = repo.tags
-branch_name = repo.active_branch.name
 
 if 'GITHUB_EVENT_NAME' in os.environ:
     github_event_name = os.environ['GITHUB_EVENT_NAME']
