@@ -33,7 +33,13 @@ class RateErrorDuration:
         self._start_time = datetime.datetime.now().timestamp()
 
     def __str__(self):
-        """Give a usable string representation of the object."""
+        """
+        Give a usable string representation of the object.
+
+        Returns a string similar to this:
+
+        `rate = 1.9904 tps, errors = 0 in 2 (0.0%), duration = 502.4475 milliseconds per transaction.`
+        """
         count = self.count()
         rate = self.rate()
         errors = self.errors()
