@@ -13,3 +13,13 @@ Feature: Rate, Errors and Duration (RED) Metrics
       | 0                   | 0             | 1               | 0             | 0               | 0                 |
       | 1                   | 1             | 1               | 1             | 1               | 1000              |
       | 1,2,3               | 1,2,3         | 3               | 6             | 6               | 500               |
+
+    Scenario Outline: Rate Throttling
+      Given a rate of <rate>
+      When transaction count is <count>
+      Then throttle time should be greater or equal to <throttle_time>
+      Examples:
+        | rate | count | throttle_time |
+        | 120  | 119   | 0.5           |
+        | 120  | 2     | 0.0           |
+        | 120  | 0     | 0.0           |

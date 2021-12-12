@@ -1,7 +1,14 @@
 # Changelog
 
 
-## 0.1.2
+## 0.2.0
+
+### New
+
+* Add the throttle_rate method. [Ben Dalling]
+
+
+## 0.1.2 (2021-11-21)
 
 ### New
 

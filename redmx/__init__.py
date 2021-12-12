@@ -19,6 +19,7 @@ Will produce the following output:
 `rate = 1.9904 tps, errors = 0 in 2 (0.0%), duration = 502.4475 milliseconds per transaction.`
 """
 import datetime
+import time
 
 
 class RateErrorDuration:
@@ -157,3 +158,33 @@ class RateErrorDuration:
             return round(self.count() / seconds, 4)
         else:
             return 0.0
+
+    def throttle_rate(self, allowed_rate_per_second):
+        """
+        Throttle (sleep) depending on an allowed transaction rate in comparison to an actual transaction rate.
+
+        Parameters
+        ----------
+        allowed_rate_per_second : float
+            The maximum rate allowed in transactions per second.
+
+        Returns
+        -------
+        float
+            The time in seconds that we slept for.
+        """
+        time_now = datetime.datetime.now().timestamp()
+        duration = 1.0 / allowed_rate_per_second
+        count = self.count()
+
+        if count == 0:
+            sleep_time = 0
+        else:
+            expected_length_of_time = count * duration
+            expected_time = self._start_time + expected_length_of_time
+
+            if time_now < expected_time:
+                sleep_time = expected_time - time_now
+
+        time.sleep(sleep_time)
+        return sleep_time
