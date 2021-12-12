@@ -11,6 +11,11 @@ from pytest_bdd import (
 )
 
 
+@scenario('../features/redmx.feature', 'Rate Throttling')
+def test_rate_throttling():
+    """Rate Throttling."""
+
+
 @scenario('../features/redmx.feature', 'Test Metrics')
 def test_test_metrics():
     """Test Metrics."""
@@ -23,6 +28,14 @@ def a_metrics_object():
 
     return {
         'redmx': redmx
+    }
+
+
+@given(parsers.parse('a rate of {rate:d}'), target_fixture='throttling_fixture')
+def a_rate_of_rate(rate):
+    """a rate of <rate>."""
+    return {
+        'rate': rate
     }
 
 
@@ -58,6 +71,12 @@ def actual_transactions_transactions_are_applied(redmx_fixture, actual_transacti
     redmx_fixture['redmx'] = redmx
 
 
+@when(parsers.parse('transaction count is {count:d}'))
+def transaction_count_is_count(count, throttling_fixture):
+    """transaction count is <count>."""
+    throttling_fixture['count'] = count
+
+
 @then(parsers.parse('ensure duration is greater than or equal to {expected_duration:d}'))
 def ensure_duration_is_greater_than_or_equal_to_expected_duration(redmx_fixture, expected_duration):
     """ensure duration is greater than or equal to <expected_duration>."""
@@ -88,3 +107,14 @@ def ensure_string_representation_is_valid(redmx_fixture):
     s = str(redmx)
     assert s.startswith('rate =')
     assert s.endswith('per transaction.')
+
+
+@then(parsers.parse('throttle time should be greater or equal to {throttle_time}'))
+def throttle_time_should_be_greater_or_equal_to_throttle_time(throttle_time, throttling_fixture):
+    """throttle time should be greater or equal to <throttle_time>."""
+    expected_throttle_time = float(throttle_time)
+    redmx = RateErrorDuration()
+    redmx.increment_count(throttling_fixture['count'])
+    actual_throttle_time = redmx.throttle_rate(throttling_fixture['rate'])
+    message = f'Expected {actual_throttle_time} to be greate than or equal to {expected_throttle_time}'
+    assert actual_throttle_time >= expected_throttle_time, message
