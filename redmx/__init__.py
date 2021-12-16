@@ -159,7 +159,7 @@ class RateErrorDuration:
         else:
             return 0.0
 
-    def throttle_rate(self, allowed_rate_per_second):
+    def throttle_rate(self, allowed_rate_per_second, calculate_only=False):
         """
         Throttle (sleep) depending on an allowed transaction rate in comparison to an actual transaction rate.
 
@@ -167,6 +167,8 @@ class RateErrorDuration:
         ----------
         allowed_rate_per_second : float
             The maximum rate allowed in transactions per second.
+        calculate_only: bool,optional
+            Calculate and return the value, don't actually sleep if True.  Default is False.
 
         Returns
         -------
@@ -180,11 +182,13 @@ class RateErrorDuration:
         if count == 0:
             sleep_time = 0
         else:
-            expected_length_of_time = count * duration
+            expected_length_of_time = (count * duration) + duration
             expected_time = self._start_time + expected_length_of_time
 
             if time_now < expected_time:
                 sleep_time = expected_time - time_now
 
-        time.sleep(sleep_time)
+        if not calculate_only:
+            time.sleep(sleep_time)
+
         return sleep_time

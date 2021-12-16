@@ -115,6 +115,6 @@ def throttle_time_should_be_greater_or_equal_to_throttle_time(throttle_time, thr
     expected_throttle_time = float(throttle_time)
     redmx = RateErrorDuration()
     redmx.increment_count(throttling_fixture['count'])
-    actual_throttle_time = redmx.throttle_rate(throttling_fixture['rate'])
+    actual_throttle_time = redmx.throttle_rate(throttling_fixture['rate'], True)
     message = f'Expected {actual_throttle_time} to be greate than or equal to {expected_throttle_time}'
     assert actual_throttle_time >= expected_throttle_time, message
