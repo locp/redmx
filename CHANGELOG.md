@@ -1,7 +1,14 @@
 # Changelog
 
 
-## 0.2.0
+## 0.2.1
+
+### Fix
+
+* Ensure that duration is predicting the next transaction. [Ben Dalling]
+
+
+## 0.2.0 (2021-12-12)
 
 ### New
 
