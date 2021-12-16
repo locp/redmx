@@ -1,9 +1,11 @@
 # Changelog
 
 
-## 0.2.1
+## 0.2.2
 
 ### Fix
+
+* Correct deployment issues. [Ben Dalling]
 
 * Ensure that duration is predicting the next transaction. [Ben Dalling]
 
