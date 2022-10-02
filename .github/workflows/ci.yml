@@ -30,7 +30,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Lint
-        run: make
+        run: make lint
 
       - name: Build
         run: make build
