@@ -1,0 +1,36 @@
+---
+name: Latest Packages
+
+on:
+  push:
+    branches:
+      - feature/latest
+  schedule:
+    - cron: '0 0 1,15 * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Requirements
+        run: |
+          python -m pip install --upgrade pip
+          cut -d= -f1 requirements.txt | tee /tmp/requirements-latest.txt
+          pip install -qr /tmp/requirements-latest.txt
+          pip freeze
+          pip check
+
+      - name: Make
+        run: make
